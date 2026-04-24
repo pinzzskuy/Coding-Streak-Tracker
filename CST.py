@@ -1,7 +1,18 @@
 import random
 import math
 import os
-from datetime import date
+from datetime import date, timedelta
+
+quotes = [ "Jangan mudah menyerah",
+           "Hidup tak selalu mulus", 
+           "Tidak ada yang peduli jika kau gagal",
+           "Orang hanya peduli jika kau berhasil", 
+           "Buatlah mereka iri dengan keberhasilanmu", 
+           "Kegagalan bukanlah Akhir",  
+           "Kerja Cerdas, Bukan Kerja Keras", 
+           "High Risk, High Reward", 
+           "Kejar sampai melebihi impianmu"
+]
 
 # SETUP PATH
 folder_projek = os.path.dirname(os.path.abspath(__file__))
@@ -21,20 +32,17 @@ streakSekarang = ambil_data(path_streak)
 totalMenit = ambil_data(path_durasi)
 menitKemarin = ambil_data(path_kemarin)
 tglTerakhir = ambil_data(path_tanggal, default="")
+tglHariIni = date.today()
 
-tglHariIni = str(date.today())
+if tglTerakhir: 
+  tglObjekTerakhir = date.fromisoformat(tglTerakhir)
 
+  selisih = tglHariIni - tglObjekTerakhir
+  if selisih > timedelta(days=1):
+    print("Walah walah padam lur streakmu! Makane ojo bolos")
+    streakSekarang = 0
+    with open(path_streak, "w") as file: file.write("0")
 
-quotes = [ "Jangan mudah menyerah",
-           "Hidup tak selalu mulus", 
-           "Tidak ada yang peduli jika kau gagal",
-           "Orang hanya peduli jika kau berhasil", 
-           "Buatlah mereka iri dengan keberhasilanmu", 
-           "Kegagalan bukanlah Akhir",  
-           "Kerja Cerdas, Bukan Kerja Keras", 
-           "High Risk, High Reward", 
-           "Kejar sampai melebihi impianmu"
-]
 
 quoteGenerator = random.choice(quotes)
 print(f"Kata kata hari ini: {quoteGenerator}")
@@ -53,7 +61,7 @@ if jawaban in ["ya","yoi","yes","yup"]:
   with open(path_streak, "w") as file:
     file.write(str(streakSekarang))
   with open(path_tanggal, "w") as file:
-    file.write(tglHariIni)
+    file.write(str(tglHariIni))
   print(f"Jojis tenan bro! streakmu masih {streakSekarang} hari!")
 
   totalMenit += menitBaru
